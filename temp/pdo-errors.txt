@@ -1,1 +1,0 @@
-SQLSTATE[HY000] [1044] Access denied for user ''@'localhost' to database 'hoztal'SQLSTATE[HY000] [1044] Access denied for user ''@'localhost' to database 'hoztal'SQLSTATE[HY000] [1049] Unknown database 'hztal'
