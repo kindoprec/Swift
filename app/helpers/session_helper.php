@@ -2,14 +2,18 @@
 
 class Session_helper {
 
-	function set($key, $val)
+	public function get($key)
 	{
-		$_SESSION["$key"] = $val;
+		if (isset($_SESSION[$key])) {
+			return $_SESSION[$key];
+		}
+
+		return null;
 	}
-	
-	function get($key)
+
+	public function set($key, $value)
 	{
-		return $_SESSION["$key"];
+		$_SESSION[$key] = $value;
 	}
 	
 	function destroy()
