@@ -1,9 +1,16 @@
 <?php
 
-/*
- * Swift Core
- * @author Precious Kindo [lilonaony@gmail.com]
+/**
+ * Swift
+ *
+ * Core file for framework intialization
+ *
+ * $Swift = new Swift();
+ * $Swift->boot();
+ *
+ * @Author Precious Kindo [lilonaony@gmail.com]
  * @Created Nov 2016
+ * Version 0.0.1
  */
 class Swift
 {
@@ -13,6 +20,18 @@ class Swift
 	}
 
 	public function boot()
+	{
+		$this->get_uri_segments();
+	}
+
+	/**
+     * Get the URI segments from the URL
+     *
+     * @param string $base_uri Optional base URI if not in root folder
+     * @return array Returns array of URI segments
+     * @access private
+     */
+	public function get_uri_segments()
 	{
 		global $config;
 	    
@@ -32,6 +51,8 @@ class Swift
 			$url = trim(preg_replace('/'. str_replace('/', '\/', str_replace('index.php', '', $script_url)) .'/', '', $request_url, 1), '/');
 			$url = str_replace('-', '_', $url);
 		}
+
+		$url = rtrim(preg_replace('/\?.*/', '', $url), '/');
 
 	    
 		// Split the url into segments

@@ -1,6 +1,7 @@
 #Swift
 
-Swift is a MVC (Model-View-Controller) php framework on top of [PIP](http://gilbitron.github.com/PIP/). It aims to be as simple as possible to set up and use.
+Swift is a MVC (Model-View-Controller) php framework on top of [PIP](http://gilbitron.github.com/PIP/). 
+It aims to be as simple as possible to set up and use.
 
 Visit [http://kindoprec.github.com/Swift](http://kindoprec.github.com/Swift/) for more information and documentation.
 

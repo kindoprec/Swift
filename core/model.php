@@ -1,10 +1,41 @@
 <?php
 
-include 'core.php';
+/**
+ * Swift Database Connector
+ *
+ * Default SQL Database is on top of PDO
+ *
+ * For SQlite users: $this->connection = new PDO("sqlite:my/path/to/database.db");
+ *
+ * @Author Precious Kindo [lilonaony@gmail.com]
+ * @Created Nov 2016
+ * Version 0.0.1
+ */
+include 'dblayer.php';
 
-class Model extends Swift {
+class Model {
 
-	private $connection;
+    /**
+     * The instance of Database
+     *
+     * @var Database
+     */
+    public $db;
+
+	/**
+     * The structure of the database
+     *
+     * @var array
+     */
+    public $db_structure;
+    /**
+     * Array of custom table indexes
+     *
+     * @var array
+     */
+    public $table_index;
+
+	public $_buildQuery; // use heap method to stack queries, there pretty should be better ways
 
 	public function __construct()
 	{
@@ -18,58 +49,51 @@ class Model extends Swift {
 		*/
 		global $config;
 
-		try {
-			# SQLite Database
-			#$this->connection = new PDO("sqlite:my/path/to/database.db");
+        $this->db = new DbLayer();
+        if(!$this->db->init()) throw new Exception($this->db->get_error());
+		$this->db_structure = $this->map_db($config['db_name']);
+		$this->table_index = array();
 
-			# MySQL with PDO_MYSQL
-			$this->connection = new \PDO('mysql:host='.$config['db_host'].'; dbname='.$config['db_name'],  $config['db_username'], $config['db_password']);
-	    } 
-	    catch (PDOException $e){
-	      	echo $e->getMessage();
-	    	file_put_contents(ROOT_DIR .'temp/pdo-errors.txt', $e->getMessage(), FILE_APPEND);
-	    	die();
-	    }
 	}
 
-	public function _escstr($string)
-	{
-		return mysql_real_escape_string($string);
-	}
-	
-	public function _bool($val)
-	{
-	    return !!$val;
-	}
-	
-	public function _date($val)
-	{
-	    return date('Y-m-d', $val);
-	}
-	
-	public function _time($val)
-	{
-	    return date('H:i:s', $val);
-	}
-	
-	public function _now($val)
-	{
-	    return date('Y-m-d H:i:s', $val);
-	}
+    /**
+     * Add a custom index (usually primary key) for a table
+     *
+     * @param string $table Name of the table
+     * @param string $field Name of the index field
+     * @access public
+     */
+    public function set_table_index($table, $field)
+    {
+        $this->table_index[$table] = $field;
+    }
 
-	public function query($qry)
-	{
-		$this->addToLog($qry);
-		$result = $this->connection->query($qry) or die('Error: '. mysql_error());
-		return $result;
-	}
+    /**
+     * Map the stucture of the MySQL db to an array
+     *
+     * @param string $database Name of the database
+     * @return array Returns array of db structure
+     * @access public
+     */
+    public function map_db($database)
+    {
+        // Map db structure to array
+        $tables_arr = array();
+        $this->db->query('SHOW TABLES FROM '. $database);
+        while($table = $this->db->fetch_array()){
+            if(isset($table['Tables_in_'. $database])){
+                $table_name = $table['Tables_in_'. $database];
+                $tables_arr[$table_name] = array();
+            }
+        }
+        foreach($tables_arr as $table_name=>$val){
+            $this->db->query('SHOW COLUMNS FROM '. $table_name);
+            $fields = $this->db->fetch_all();
+            $tables_arr[$table_name] = $fields;
+        }
+        return $tables_arr;
+    }
 
-	public function save($qry, $data=array())
-	{
-		$exec = $this->connection->$qry;
-		$result = $exec->execute($data) or die('Error: '. mysql_error());
-		return $result;
-	}
     
 }
 ?>
