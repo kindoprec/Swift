@@ -37,7 +37,7 @@ class Model {
 
         $this->db = new DbLayer($config);
         if(!$this->db->init()) throw new Exception($this->db->get_error());
-		$this->db_structure = $this->map_db($config['db_name']);
+		//$this->db_structure = $this->map_db($config['db_name']);
 		$this->table_index = array();
 
 	}

@@ -6,11 +6,10 @@
     </div>
     <?php
 
-    /*foreach( $eUser as $item ) {
-    	echo $item['email'];
-    }*/
+    foreach( $eUser as $item ) {
+    	echo $item->email.'<br>';
+    }
 
-    var_dump($eUser);
     ?>
 
 <?php include('footer.php'); ?>

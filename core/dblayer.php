@@ -288,13 +288,18 @@ class DbLayer {
      */
     public function fetch_object() 
     {
-        $object = $this->_query->setFetchMode(PDO::FETCH_OBJ);
+        $this->_query->setFetchMode(PDO::FETCH_OBJ);
+
+        $objects = array();
+        while($object = $this->_query->fetch()) {
+            $objects[] = $object;
+        }
 
         if(!$object && $this->_verbose) {
             $this->_error = mysql_error();
         }
 
-        return $object;
+        return $objects;
     }
 
     /*
@@ -302,37 +307,38 @@ class DbLayer {
      */
     public function fetch_array() 
     {
-        $array = @mysql_fetch_array($this->_query);
-        if($array){
-            foreach($array as $key=>$val){ 
+
+        $this->_query->setFetchMode(PDO::FETCH_ASSOC);
+        $_array = $this->_query->fetch();
+        if($_array){
+            foreach($_array as $key=>$val){ 
                 if(is_numeric($key)){ 
-                    unset($array[$key]); 
+                    unset($_array[$key]); 
                 } 
             }
         }
 
-        if(!$array && $this->_verbose) {
+        if(!$_array && $this->_verbose) {
             $this->_error = mysql_error();
         }
 
-        return $array;
+        return $_array;
     }
     
     public function fetch_all() 
     {
+        $this->_query->setFetchMode(PDO::FETCH_ASSOC);
         $results = array();
-        while($array = @mysql_fetch_array($this->_query)){  
-            foreach($array as $key=>$val){ 
+        while($_array = $this->_query->fetch()){  
+            foreach($_array as $key=>$val){ 
                 if(is_numeric($key)){ 
-                    unset($array[$key]); 
+                    unset($_array[$key]); 
                 } 
             }
-            $results[] = $array; 
+            $results[] = $_array; 
         }
         
-
-
-        if(!$array && $this->_verbose) {
+        if(!$_array && $this->_verbose) {
             $this->_error = mysql_error();
         }
 
@@ -344,7 +350,7 @@ class DbLayer {
      */
     public function num_rows() 
     {
-        $num = @mysql_num_rows($this->_query);
+        $num = $this->_query->rowCount();
 
         if(!$num && $this->_verbose) {
             $this->_error = mysql_error();
