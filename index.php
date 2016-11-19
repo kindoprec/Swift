@@ -18,10 +18,11 @@ try {
 
 	// Includes
 	require_once(APP_DIR .'config/config.php');
+	require_once(ROOT_DIR .'core/core.php');
 	require_once(ROOT_DIR .'core/model.php');
 	require_once(ROOT_DIR .'core/view.php');
 	require_once(ROOT_DIR .'core/controller.php');
-	require_once(ROOT_DIR .'core/core.php');
+	
 
 	// Define base URL
 	global $config;

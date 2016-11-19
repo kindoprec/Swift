@@ -11,28 +11,20 @@
  * @Created Nov 2016
  * Version 0.0.1
  */
-include 'core.php';
 
-class DbLayer extends Swift {
+class DbLayer {
 
 	private $connection;
+    private $_config;
 	private $_query;
 	private $_error;
 	private $_verbose;
 
 	private $_buildQuery; // use heap method to stack queries, there pretty should be better ways
 
-	public function __construct()
+	public function __construct($config)
 	{
-		/**
-		* Database connection
-		* Constructor
-		* @param string DB_HOST
-		* @param string DB_NAME
-		* @param string DB_USERNAME
-		* @param string DB_PASSWORD
-		*/
-		global $config;
+        $this->_config = $config;
 
 		/*try {
 			# SQLite Database
@@ -70,7 +62,7 @@ class DbLayer extends Swift {
      */
     private function __check_config() 
     {
-        global $config;
+        $config = $this->_config;
 
         if(empty($config["db_host"]) || empty($config["db_username"]) || empty($config["db_name"])) {
             $this->_error = "Configuration details were blank.";
@@ -87,7 +79,15 @@ class DbLayer extends Swift {
      */
     private function __connect() 
     {
-    	global $config;
+        /**
+        * Database connection
+        * Constructor
+        * @param string DB_HOST
+        * @param string DB_NAME
+        * @param string DB_USERNAME
+        * @param string DB_PASSWORD
+        */
+    	$config = $this->_config;
 
         $this->connection = new \PDO('mysql:host='.$config['db_host'].'; dbname='.$config['db_name'],  $config['db_username'], $config['db_password']);
 
@@ -288,7 +288,7 @@ class DbLayer extends Swift {
      */
     public function fetch_object() 
     {
-        $object = @mysql_fetch_object($this->_query);
+        $object = $this->_query->setFetchMode(PDO::FETCH_OBJ);
 
         if(!$object && $this->_verbose) {
             $this->_error = mysql_error();

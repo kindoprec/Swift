@@ -3,10 +3,6 @@
 /**
  * Swift Database Connector
  *
- * Default SQL Database is on top of PDO
- *
- * For SQlite users: $this->connection = new PDO("sqlite:my/path/to/database.db");
- *
  * @Author Precious Kindo [lilonaony@gmail.com]
  * @Created Nov 2016
  * Version 0.0.1
@@ -35,21 +31,11 @@ class Model {
      */
     public $table_index;
 
-	public $_buildQuery; // use heap method to stack queries, there pretty should be better ways
-
 	public function __construct()
 	{
-		/**
-		* Database connection
-		* Constructor
-		* @param string DB_HOST
-		* @param string DB_NAME
-		* @param string DB_USERNAME
-		* @param string DB_PASSWORD
-		*/
 		global $config;
 
-        $this->db = new DbLayer();
+        $this->db = new DbLayer($config);
         if(!$this->db->init()) throw new Exception($this->db->get_error());
 		$this->db_structure = $this->map_db($config['db_name']);
 		$this->table_index = array();
@@ -93,7 +79,6 @@ class Model {
         }
         return $tables_arr;
     }
-
     
 }
 ?>
