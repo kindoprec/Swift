@@ -14,33 +14,33 @@
 
 class DbLayer {
 
-	private $connection;
+    private $connection;
     private $_config;
-	private $_query;
-	private $_error;
-	private $_verbose;
+    private $_query;
+    private $_error;
+    private $_verbose;
 
-	private $_buildQuery; // use heap method to stack queries, there pretty should be better ways
+    private $_buildQuery; // use heap method to stack queries, there pretty should be better ways
 
-	public function __construct($config)
-	{
+    public function __construct($config)
+    {
         $this->_config = $config;
 
-		/*try {
-			# SQLite Database
-			#$this->connection = new PDO("sqlite:my/path/to/database.db");
+        /*try {
+            # SQLite Database
+            #$this->connection = new PDO("sqlite:my/path/to/database.db");
 
-			# MySQL with PDO_MYSQL
-			$this->connection = new \PDO('mysql:host='.$config['db_host'].'; dbname='.$config['db_name'],  $config['db_username'], $config['db_password']);
-	    } 
-	    catch (PDOException $e){
-	      	echo $e->getMessage();
-	    	file_put_contents(ROOT_DIR .'temp/pdo-errors.txt', $e->getMessage(), FILE_APPEND);
-	    	die();
-	    }*/
-	}
+            # MySQL with PDO_MYSQL
+            $this->connection = new \PDO('mysql:host='.$config['db_host'].'; dbname='.$config['db_name'],  $config['db_username'], $config['db_password']);
+        } 
+        catch (PDOException $e){
+            echo $e->getMessage();
+            file_put_contents(ROOT_DIR .'temp/pdo-errors.txt', $e->getMessage(), FILE_APPEND);
+            die();
+        }*/
+    }
 
-	/*
+    /*
      * Initializes the database.  
      * Checks the configuration, connects, selects database.
      */
@@ -57,7 +57,7 @@ class DbLayer {
         return true;
     }
 
-	/*
+    /*
      * Checks the configuration for blanks.
      */
     private function __check_config() 
@@ -87,7 +87,7 @@ class DbLayer {
         * @param string DB_USERNAME
         * @param string DB_PASSWORD
         */
-    	$config = $this->_config;
+        $config = $this->_config;
 
         $this->connection = new \PDO('mysql:host='.$config['db_host'].'; dbname='.$config['db_name'],  $config['db_username'], $config['db_password']);
 
@@ -99,35 +99,35 @@ class DbLayer {
         return true;
     }
 
-	public function _escstr($string)
-	{
-		return mysql_real_escape_string($string);
-	}
-	
-	public function _bool($val)
-	{
-	    return !!$val;
-	}
-	
-	public function _date($val)
-	{
-	    return date('Y-m-d', $val);
-	}
-	
-	public function _time($val)
-	{
-	    return date('H:i:s', $val);
-	}
-	
-	public function _now($val)
-	{
-	    return date('Y-m-d H:i:s', $val);
-	}
+    public function _escstr($string)
+    {
+        return mysql_real_escape_string($string);
+    }
+    
+    public function _bool($val)
+    {
+        return !!$val;
+    }
+    
+    public function _date($val)
+    {
+        return date('Y-m-d', $val);
+    }
+    
+    public function _time($val)
+    {
+        return date('H:i:s', $val);
+    }
+    
+    public function _now($val)
+    {
+        return date('Y-m-d H:i:s', $val);
+    }
 
-	/* 
-	 * Custom ORM queries inpired by Flask-SQLAchemy
-	 */
-	/*
+    /* 
+     * Custom ORM queries inpired by Flask-SQLAchemy
+     */
+    /*
      * SELECT starter.  $fields can be either a string or an array of strings to select.
      */
     public function select($fields) 
@@ -379,7 +379,7 @@ class DbLayer {
         return $this;
     }
 
-	/*
+    /*
      * Will return the current built query story in $this->_buildQuery stack;
      */
     public function get_query() 
@@ -387,7 +387,7 @@ class DbLayer {
         return $this->_buildQuery;
     }
 
-	/*
+    /*
      * Will return the current stored error.
      */
     public function get_error() 

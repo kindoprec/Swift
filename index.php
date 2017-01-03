@@ -27,6 +27,7 @@ try {
 	// Define base URL
 	global $config;
 	define('BASE_URL', $config['base_url']);
+	define('SITE_NAME', 'Your Site Name');
 
 	/**
      * Initialize our main class

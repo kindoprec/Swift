@@ -21,6 +21,21 @@ class Session_helper {
 		session_destroy();
 	}
 
+	//
+	public function is_loggedin()
+    {
+    	if($this->get('UserID')){
+    		return true;
+    	}else{
+    		return false;
+    	}
+    }
+    
+    public function sessid()
+    {
+    	return $_SESSION['UserID'];
+    }
+
 }
 
 ?>
