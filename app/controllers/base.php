@@ -5,7 +5,7 @@ class Base extends Controller {
 	function index()
 	{
 		$template = $this->loadView('index');
-		$template->setPageTitle('Home');
+		$template->setPageTitle('Home | '.SITE_NAME);
 		
 		$user = $this->loadModel('user');
 		$eUser = $user->getUser(1);
