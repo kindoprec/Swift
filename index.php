@@ -14,10 +14,12 @@ session_start();
 define('ROOT_DIR', realpath(dirname(__FILE__)) .'/');
 define('APP_DIR', ROOT_DIR .'app/');
 
+$env = (!getenv('APP_ENV')) ? 'prod' : getenv('APP_ENV');
+
 try {
 
 	// Includes
-	require_once(APP_DIR .'config/config.php');
+	require_once(APP_DIR .'config/config.' . $env . '.php');
 	require_once(ROOT_DIR .'core/core.php');
 	require_once(ROOT_DIR .'core/model.php');
 	require_once(ROOT_DIR .'core/view.php');
