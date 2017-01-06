@@ -5,6 +5,11 @@ It aims to be as simple as possible to set up and use.
 
 Visit [http://kindoprec.github.com/Swift](http://kindoprec.github.com/Swift/) for more information and documentation.
 
+## Changes
+
+* Update 'index.php' to use APP_ENV for 'config' file.
+* Usage:  APP_ENV=prod makes requires config.prod.php
+
 ## Requirements
 
 * PHP 5.1 or greater
