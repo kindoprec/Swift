@@ -7,9 +7,14 @@ class Base extends Controller {
 		$template = $this->loadView('index');
 		$template->setPageTitle('Home | '.SITE_NAME);
 		
+		// Get all users
 		$user = $this->loadModel('user');
-		$eUser = $user->getUser(1);
-		$template->set(compact('eUser'));
+		$eUsers = $user->getUsers();
+
+		// Get one user
+		$uid = 1;
+		$user = $user->getUser($uid);
+		$template->set(compact('eUsers', 'user'));
 		
 		$template->render();
 	}
